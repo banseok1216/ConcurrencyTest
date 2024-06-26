@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hobbyhobby?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: tjljh6767.
+    hikari:
+      maximum-pool-size: 40
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate.format_sql: true
