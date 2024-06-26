@@ -3,6 +3,7 @@ package banseok.concurrency.service
 import banseok.concurrency.domain.Item
 import banseok.concurrency.exception.ItemNotExistException
 import banseok.concurrency.repository.ItemRepository
+import banseok.concurrency.structure.OptimisticLockStructure
 import mu.KotlinLogging
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterEach
@@ -16,13 +17,13 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @SpringBootTest
-class SynchronizedItemServiceTest {
+class OptimisticLockItemServiceTest {
 
     private val logger = KotlinLogging.logger {}
 
 
     @Autowired
-    private lateinit var synchronizedItemService: SynchronizedItemService
+    private lateinit var optimisticLockStructure: OptimisticLockStructure
 
     @Autowired
     private lateinit var itemRepository: ItemRepository
@@ -41,8 +42,8 @@ class SynchronizedItemServiceTest {
     }
 
     @Test
-    @DisplayName("synchronized 적용 - 동시에 100개의 아이템 구매 요청 테스트")
-    fun buyItem_Synchronized_Test() {
+    @DisplayName("낙관적 락 적용 - 동시에 100개의 아이템 구매 요청 테스트")
+    fun buyItem_OptimisticLock_Test() {
         val threadCount = 100
         val executorService: ExecutorService = Executors.newFixedThreadPool(32)
         val countDownLatch = CountDownLatch(threadCount)
@@ -50,7 +51,7 @@ class SynchronizedItemServiceTest {
         repeat(threadCount) {
             executorService.submit {
                 try {
-                    synchronizedItemService.buyItem(1L, 1L)
+                    optimisticLockStructure.optimisticLockBuyItem(1L, 1L)
                 } finally {
                     countDownLatch.countDown()
                 }

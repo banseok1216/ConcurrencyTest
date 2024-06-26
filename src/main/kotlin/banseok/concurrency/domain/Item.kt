@@ -1,9 +1,6 @@
 package banseok.concurrency.domain
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
 @Entity
 data class Item(
@@ -17,7 +14,10 @@ data class Item(
 
     var imageUrl: String? = null,
 
-    var stock: Long = 0
+    var stock: Long = 0,
+
+    @Version
+    val version: Long? = null
 ) {
 
     constructor(id: Long) : this() {
