@@ -16,13 +16,13 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @SpringBootTest
-class PessimisticLockItemServiceTest {
+class SynchronizedItemServiceTest {
 
     private val logger = KotlinLogging.logger {}
 
 
     @Autowired
-    private lateinit var pessimisticLockItemService: PessimisticLockItemService
+    private lateinit var synchronizedItemService: SynchronizedItemService
 
     @Autowired
     private lateinit var itemRepository: ItemRepository
@@ -41,7 +41,7 @@ class PessimisticLockItemServiceTest {
     }
 
     @Test
-    @DisplayName("비관적 락 적용 - 동시에 100개의 아이템 구매 요청 테스트")
+    @DisplayName("synchronized 적용 - 동시에 100개의 아이템 구매 요청 테스트")
     fun buyItem_PessimisticLock_Test() {
         val threadCount = 100
         val executorService: ExecutorService = Executors.newFixedThreadPool(32)
@@ -50,7 +50,7 @@ class PessimisticLockItemServiceTest {
         repeat(threadCount) {
             executorService.submit {
                 try {
-                    pessimisticLockItemService.buyItem(1L, 1L)
+                    synchronizedItemService.buyItem(1L, 1L)
                 } finally {
                     countDownLatch.countDown()
                 }
